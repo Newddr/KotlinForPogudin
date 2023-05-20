@@ -35,15 +35,26 @@
 
                 android:src="@mipmap/ic_launcher" />
 
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/star"
+ />
+
             <TextView
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/imageView2"
-                android:text="Имя"
                 android:paddingLeft="40dp"
+                android:text="Имя"
                 android:textSize="16sp" />
+
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

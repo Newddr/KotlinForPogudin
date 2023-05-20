@@ -1,4 +1,4 @@
-package com.example.lab3_vk_control
+package com.example.films
 
 
 
@@ -15,11 +15,11 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.lab3_vk_control.ui.login.CircleTransform
+import com.example.films.R
 import com.squareup.picasso.Picasso
 
 
-class RecycleAdapter(private val names: MutableList<VkInfo>, private val linkActivity: FragmentActivity, private val container:View): RecyclerView.Adapter<RecycleAdapter.MyViewHolder>(){
+class RecycleAdapter(private val names: MutableList<FilmsInfo>, private val linkActivity: FragmentActivity, private val container:View): RecyclerView.Adapter<RecycleAdapter.MyViewHolder>(){
 
     val handler = Handler(Looper.getMainLooper())
 
@@ -34,7 +34,7 @@ class RecycleAdapter(private val names: MutableList<VkInfo>, private val linkAct
     }
 
 
-    fun addItem(item:VkInfo) {
+    fun addItem(item:FilmsInfo) {
         names.add(item)
         handler.post{
             notifyDataSetChanged()
@@ -62,16 +62,18 @@ class RecycleAdapter(private val names: MutableList<VkInfo>, private val linkAct
                 .load(names[position].image)
                 .transform(CircleTransform())
                 .into(holder.imageview)
-            val fragment = userinfoFragment()
+            val fragment = FilmInfoFragment()
             holder.card.setOnClickListener {
 
                 val bitmap = getBitmapFromImageView(holder.imageview)
                 val header = names[position].name
                 val description = names[position].description
+                val status = names[position].status.toString()
                 val args = Bundle().apply {
                     putString("name", header)
                     putParcelable("bitmap", bitmap)
                     putString("description", description)
+                    putString("status",status)
                 }
                 fragment.arguments = args
 

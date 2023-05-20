@@ -1,4 +1,4 @@
-package com.example.lab3_vk_control
+package com.example.films
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

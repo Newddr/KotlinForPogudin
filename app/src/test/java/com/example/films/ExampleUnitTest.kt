@@ -1,4 +1,4 @@
-package com.example.lab3_vk_control
+package com.example.films
 
 import org.junit.Test
 

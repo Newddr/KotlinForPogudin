@@ -2,6 +2,7 @@ package com.example.films
 
 
 import android.annotation.SuppressLint
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -10,31 +11,35 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.films.R
 import kotlinx.coroutines.*
 
-
-public var isAutorize = false
 class ContentFragment : Fragment(R.layout.fragment_content) {
 
-    public var listOfFilms = mutableListOf<FilmsInfo>(FilmsInfo("фильм 1", 2023,"Описание к фильму 1","https://preview.redd.it/4laj8cm34nxa1.jpg?width=640&crop=smart&auto=webp&v=enabled&s=9599f708cd7e7ba2268a99dc0f4668bfe88ebe78",1))
-
+    var listOfFilms = mutableListOf<FilmsInfo>()
+    private lateinit var databaseHelper: DataBaseHelper
+    private var filter="";
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(activity is SecondActivity) filter =" WHERE status = 1"
+        else filter=""
+        databaseHelper = DataBaseHelper(requireContext())
     }
 
 
 
 
     @SuppressLint("Range")
-    private  fun fillist(adapter: RecycleAdapter)  {
-        var i =0;
-        for(i in 0..10)  {
-            val data = FilmsInfo("film ${i}", 1999, "description", "https://preview.redd.it/4laj8cm34nxa1.jpg?width=640&crop=smart&auto=webp&v=enabled&s=9599f708cd7e7ba2268a99dc0f4668bfe88ebe78",0)
+    private suspend fun fillist(adapter: RecycleAdapter)  {
+        val films = databaseHelper.getAllFilms(filter)
+        for (film in films) {
             if (adapter != null) {
-
-                listOfFilms.add(data)
+                listOfFilms.add(film)
                 //adapter.addItem(data)
                 adapter.notyy()
             }
+            delay(1000);
+
+
         }
+
     }
 
 
@@ -61,7 +66,13 @@ class ContentFragment : Fragment(R.layout.fragment_content) {
         recycle.adapter = adapter
 
 
-            if (adapter != null)  fillist(adapter)
+            if (adapter != null){
+                GlobalScope.launch(Dispatchers.IO) {
+                    if (adapter != null) {
+                        fillist(adapter)
+                    };
+                }
+            }
 
 //        text.text=recycle.adapter?.itemCount.toString()
 

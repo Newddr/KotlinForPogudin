@@ -67,6 +67,7 @@ class RecycleAdapter(private val names: MutableList<FilmsInfo>, private val link
 
                 val bitmap = getBitmapFromImageView(holder.imageview)
                 val header = names[position].name
+                val id = names[position].id
                 val description = names[position].description
                 val status = names[position].status.toString()
                 val args = Bundle().apply {
@@ -74,6 +75,7 @@ class RecycleAdapter(private val names: MutableList<FilmsInfo>, private val link
                     putParcelable("bitmap", bitmap)
                     putString("description", description)
                     putString("status",status)
+                    putInt("id",id)
                 }
                 fragment.arguments = args
 

@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import androidx.core.content.ContentProviderCompat.requireContext
 import java.io.FileOutputStream
 
@@ -12,7 +13,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     companion object {
         private const val DATABASE_NAME = "Space.db"
-        private const val DATABASE_VERSION = 2
+        private const val DATABASE_VERSION = 4
     }
 
     init {
@@ -46,7 +47,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     override fun onCreate(db: SQLiteDatabase) {
-        //db.execSQL("CREATE TABLE IF NOT EXISTS series (id INTEGER PRIMARY KEY, name TEXT, date TEXT, description TEXT, poster TEXT, status INTEGER)")
+        db.execSQL("CREATE TABLE IF NOT EXISTS series (id INTEGER PRIMARY KEY, name TEXT, date TEXT, description TEXT, poster TEXT, status INTEGER)")
 
 
     }
@@ -57,15 +58,21 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     }
 
-    fun updateFilmStatus(id: Int, status: Int) {
+    fun updateFilmStatus(idd: Int, status: Int) {
         val values = ContentValues()
         values.put("status", status)
 
         val db = writableDatabase
-        db.beginTransaction()
 
-            db.update("series", values, "$id=?", arrayOf(id.toString()))
-            db.execSQL("COMMIT")
+        db.beginTransaction()
+        try {
+            // Выполнение операции обновления данных
+            //db.update("series", values, "_id=$idd", arrayOf(idd.toString()))
+            db.execSQL("UPDATE series SET status = ${status} WHERE id=${idd}")
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
 
     }
     @SuppressLint("Range")

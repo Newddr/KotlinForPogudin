@@ -1,22 +1,21 @@
 package com.example.films
 import android.annotation.SuppressLint
-import android.content.ContentProvider
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
 import java.io.FileOutputStream
 
 class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "Space.db"
-        private const val DATABASE_VERSION = 4
+        private const val DATABASE_VERSION = 6
     }
 
     init {
+        //context.deleteDatabase("Space.db")
         val dbFile = context.getDatabasePath(DATABASE_NAME)
         if (!dbFile.exists()) {
             val assets = context.assets
@@ -59,8 +58,6 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     fun updateFilmStatus(idd: Int, status: Int) {
-        val values = ContentValues()
-        values.put("status", status)
 
         val db = writableDatabase
 
@@ -102,5 +99,29 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         return films
     }
+
+    fun checkIfSeriaExists(id: Int): Boolean {
+        val db = this.readableDatabase
+        val query = "SELECT * FROM series WHERE id = ?"
+        val cursor = db.rawQuery(query, arrayOf(id.toString()))
+        val exists = cursor.count > 0
+        cursor.close()
+        db.close()
+        return exists
+    }
+
+    fun insertSeria(seria: FilmsInfo) {
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put("id", seria.id)
+        values.put("name", seria.name)
+        values.put("date", seria.air_date)
+        values.put("poster",seria.img_url)
+        values.put("description", seria.director)
+        values.put("status", 0)
+        db.insert("series", null, values)
+        db.close()
+    }
+
 
 }

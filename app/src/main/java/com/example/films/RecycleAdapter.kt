@@ -15,7 +15,6 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.films.R
 import com.squareup.picasso.Picasso
 
 
@@ -57,9 +56,9 @@ class RecycleAdapter(private val names: MutableList<FilmsInfo>, private val link
      override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
             holder.largeTextView.text = names[position].name
-            holder.smallTextView.text = names[position].year.toString()
+            holder.smallTextView.text = names[position].air_date
             Picasso.get()
-                .load(names[position].image)
+                .load(names[position].img_url)
                 .transform(CircleTransform())
                 .into(holder.imageview)
             val fragment = FilmInfoFragment()
@@ -68,7 +67,7 @@ class RecycleAdapter(private val names: MutableList<FilmsInfo>, private val link
                 val bitmap = getBitmapFromImageView(holder.imageview)
                 val header = names[position].name
                 val id = names[position].id
-                val description = names[position].description
+                val description = names[position].director
                 val status = names[position].status.toString()
                 val args = Bundle().apply {
                     putString("name", header)

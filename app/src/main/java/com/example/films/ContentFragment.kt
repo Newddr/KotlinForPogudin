@@ -38,7 +38,7 @@ class ContentFragment : Fragment(R.layout.fragment_content) {
         listOfFilms.clear()
         val films = databaseHelper.getAllFilms(filter)
         for (film in films) {
-            if (adapter != null) {
+            if (!listOfFilms.any { it.id == film.id }) {
                 listOfFilms.add(film)
                 adapter.notyy()
             }

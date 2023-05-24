@@ -82,7 +82,6 @@ class ContentFragment : Fragment(R.layout.fragment_content) {
             }
         })
 
-        // Очистка списка фильмов перед загрузкой
         listOfFilms.clear()
     }
 
@@ -94,9 +93,6 @@ class ContentFragment : Fragment(R.layout.fragment_content) {
         fun episodes(): Call<List<FilmsInfo>>
     }
 
-    data class EpisodeResponse(
-        val items: List<FilmsInfo>
-    )
 
 
 
